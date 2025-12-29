@@ -60,13 +60,16 @@
         </footer>
     </div>
 
+    <!-- Ad Blocker Detection -->
+    <script src="/js/adblock-detect.js"></script>
+    
     <script>
-        let timeLeft = 8;
-        const timerEl = document.getElementById('timer');
-        const progressEl = document.getElementById('progress');
-        const continueBtn = document.getElementById('continueBtn');
+        var timeLeft = 8;
+        var timerEl = document.getElementById('timer');
+        var progressEl = document.getElementById('progress');
+        var continueBtn = document.getElementById('continueBtn');
 
-        const countdown = setInterval(() => {
+        var countdown = setInterval(function() {
             timeLeft--;
             timerEl.textContent = timeLeft;
             progressEl.style.width = ((8 - timeLeft) / 8 * 100) + '%';

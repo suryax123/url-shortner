@@ -1,0 +1,281 @@
+<%- include('../partials/header', { title: 'Dashboard', chartjs: true }) %>
+
+<div class="dashboard">
+    <div class="dashboard-sidebar">
+        <div class="sidebar-user">
+            <% if (user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="" class="sidebar-avatar">
+            <% } else { %>
+                <div class="sidebar-avatar-placeholder">
+                    <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <h3><%= user.name %></h3>
+            <p><%= user.email %></p>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link active">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/dashboard/links" class="sidebar-link">
+                <i class="bi bi-link-45deg"></i> My Links
+            </a>
+            <a href="/dashboard/earnings" class="sidebar-link">
+                <i class="bi bi-currency-dollar"></i> Earnings
+            </a>
+            <a href="/dashboard/withdraw" class="sidebar-link">
+                <i class="bi bi-wallet2"></i> Withdraw
+            </a>
+            <a href="/dashboard/referral" class="sidebar-link">
+                <i class="bi bi-people"></i> Referrals
+            </a>
+            <a href="/dashboard/settings" class="sidebar-link">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </nav>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p>Welcome back, <%= user.name %>!</p>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-link-45deg"></i>
+                </div>
+                <div class="stat-info">
+                    <h3><%= totalLinks %></h3>
+                    <p>Total Links</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-eye"></i>
+                </div>
+                <div class="stat-info">
+                    <h3><%= totalClicks.toLocaleString() %></h3>
+                    <p>Total Views</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$<%= user.totalEarnings.toFixed(2) %></h3>
+                    <p>Total Earnings</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$<%= user.pendingEarnings.toFixed(2) %></h3>
+                    <p>Available Balance</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Create Link -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-plus-circle"></i> Create New Link</h2>
+            </div>
+            <div class="card-body">
+                <form id="createLinkForm" class="create-link-form">
+                    <div class="input-group">
+                        <input type="url" id="originalUrl" name="originalUrl" placeholder="Paste your long URL here..." required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-lightning"></i> Shorten
+                        </button>
+                    </div>
+                </form>
+                <div id="linkResult" class="link-result hidden">
+                    <div class="result-box">
+                        <input type="text" id="shortUrl" readonly>
+                        <button type="button" id="copyBtn" class="btn btn-secondary">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <div class="card chart-card">
+                <div class="card-header">
+                    <h2><i class="bi bi-graph-up"></i> Views (Last 7 Days)</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="viewsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card chart-card">
+                <div class="card-header">
+                    <h2><i class="bi bi-globe"></i> Top Countries</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="countryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Links -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-clock-history"></i> Recent Links</h2>
+                <a href="/dashboard/links" class="btn btn-sm">View All</a>
+            </div>
+            <div class="card-body">
+                <% if (recentLinks.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Short URL</th>
+                                    <th>Original URL</th>
+                                    <th>Clicks</th>
+                                    <th>Earnings</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recentLinks.forEach(function(link) { %>
+                                    <tr>
+                                        <td>
+                                            <a href="<%= baseUrl %>/<%= link.shortId %>" target="_blank" class="short-link">
+                                                <%= baseUrl %>/<%= link.shortId %>
+                                            </a>
+                                        </td>
+                                        <td class="original-url" title="<%= link.originalUrl %>">
+                                            <%= link.originalUrl.substring(0, 40) %><%= link.originalUrl.length > 40 ? '...' : '' %>
+                                        </td>
+                                        <td><%= link.clicks %></td>
+                                        <td>$<%= link.totalEarnings.toFixed(4) %></td>
+                                        <td><%= link.createdAt.toLocaleDateString() %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <i class="bi bi-link-45deg"></i>
+                        <p>No links yet. Create your first link above!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Create link form
+    document.getElementById('createLinkForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var url = document.getElementById('originalUrl').value;
+        
+        fetch('/dashboard/links/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ originalUrl: url })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.success) {
+                document.getElementById('shortUrl').value = data.shortUrl;
+                document.getElementById('linkResult').classList.remove('hidden');
+                document.getElementById('originalUrl').value = '';
+            } else {
+                alert(data.error || 'Failed to create link');
+            }
+        })
+        .catch(function(err) {
+            alert('Error creating link');
+        });
+    });
+    
+    // Copy button
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        var shortUrl = document.getElementById('shortUrl');
+        shortUrl.select();
+        document.execCommand('copy');
+        this.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        var btn = this;
+        setTimeout(function() {
+            btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+        }, 2000);
+    });
+    
+    // Views Chart
+    var viewsCtx = document.getElementById('viewsChart').getContext('2d');
+    var dailyStats = <%- JSON.stringify(dailyStats) %>;
+    
+    new Chart(viewsCtx, {
+        type: 'line',
+        data: {
+            labels: dailyStats.map(function(s) { return s._id; }),
+            datasets: [{
+                label: 'Views',
+                data: dailyStats.map(function(s) { return s.clicks; }),
+                borderColor: '#6c5ce7',
+                backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+    
+    // Country Chart
+    fetch('/dashboard/api/country-data')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            var countryCtx = document.getElementById('countryChart').getContext('2d');
+            new Chart(countryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(function(c) { return c._id || 'Unknown'; }),
+                    datasets: [{
+                        data: data.map(function(c) { return c.count; }),
+                        backgroundColor: [
+                            '#6c5ce7', '#00cec9', '#fd79a8', '#fdcb6e', 
+                            '#00b894', '#e17055', '#74b9ff', '#a29bfe',
+                            '#55efc4', '#fab1a0'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,187 @@
+<%- include('../partials/header', { title: 'Settings' }) %>
+
+<div class="dashboard">
+    <div class="dashboard-sidebar">
+        <div class="sidebar-user">
+            <% if (user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="" class="sidebar-avatar">
+            <% } else { %>
+                <div class="sidebar-avatar-placeholder">
+                    <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <h3><%= user.name %></h3>
+            <p><%= user.email %></p>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/dashboard/links" class="sidebar-link">
+                <i class="bi bi-link-45deg"></i> My Links
+            </a>
+            <a href="/dashboard/earnings" class="sidebar-link">
+                <i class="bi bi-currency-dollar"></i> Earnings
+            </a>
+            <a href="/dashboard/withdraw" class="sidebar-link">
+                <i class="bi bi-wallet2"></i> Withdraw
+            </a>
+            <a href="/dashboard/referral" class="sidebar-link">
+                <i class="bi bi-people"></i> Referrals
+            </a>
+            <a href="/dashboard/settings" class="sidebar-link active">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </nav>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <h1>Settings</h1>
+            <p>Manage your account settings</p>
+        </div>
+        
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i>
+                <% if (success === 'profile_updated') { %>
+                    Profile updated successfully!
+                <% } else if (success === 'password_changed') { %>
+                    Password changed successfully!
+                <% } else { %>
+                    <%= success %>
+                <% } %>
+            </div>
+        <% } %>
+        
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error">
+                <i class="bi bi-exclamation-circle"></i>
+                <% if (error === 'invalid_name') { %>
+                    Name must be at least 2 characters.
+                <% } else if (error === 'google_account') { %>
+                    Google accounts cannot change password here.
+                <% } else if (error === 'wrong_password') { %>
+                    Current password is incorrect.
+                <% } else if (error === 'password_short') { %>
+                    New password must be at least 6 characters.
+                <% } else if (error === 'password_mismatch') { %>
+                    Passwords do not match.
+                <% } else { %>
+                    <%= error %>
+                <% } %>
+            </div>
+        <% } %>
+        
+        <!-- Profile Settings -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-person"></i> Profile Settings</h2>
+            </div>
+            <div class="card-body">
+                <form action="/dashboard/settings/profile" method="POST" class="settings-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" value="<%= user.name %>" required minlength="2">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="<%= user.email %>" disabled>
+                        <small class="form-text">Email cannot be changed</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Password Settings -->
+        <% if (!user.googleId || user.password) { %>
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-lock"></i> Change Password</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/dashboard/settings/password" method="POST" class="settings-form">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" required minlength="6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-lock"></i> Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-google"></i> Google Account</h2>
+                </div>
+                <div class="card-body">
+                    <p>You signed up with Google. Password management is handled through your Google account.</p>
+                </div>
+            </div>
+        <% } %>
+        
+        <!-- Account Info -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-info-circle"></i> Account Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Account Status</span>
+                        <span class="value">
+                            <span class="badge badge-<%= user.status %>"><%= user.status %></span>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Member Since</span>
+                        <span class="value"><%= user.createdAt.toLocaleDateString() %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Last Login</span>
+                        <span class="value"><%= user.lastLogin.toLocaleString() %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">CPM Rate</span>
+                        <span class="value">$<%= user.cpmRate.toFixed(2) %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Referral Code</span>
+                        <span class="value"><%= user.referralCode %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Email Verified</span>
+                        <span class="value">
+                            <% if (user.isVerified) { %>
+                                <i class="bi bi-check-circle text-success"></i> Yes
+                            <% } else { %>
+                                <i class="bi bi-x-circle text-danger"></i> No
+                            <% } %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

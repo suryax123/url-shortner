@@ -1,0 +1,236 @@
+<%- include('../partials/header', { title: 'Withdraw' }) %>
+
+<div class="dashboard">
+    <div class="dashboard-sidebar">
+        <div class="sidebar-user">
+            <% if (user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="" class="sidebar-avatar">
+            <% } else { %>
+                <div class="sidebar-avatar-placeholder">
+                    <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <h3><%= user.name %></h3>
+            <p><%= user.email %></p>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/dashboard/links" class="sidebar-link">
+                <i class="bi bi-link-45deg"></i> My Links
+            </a>
+            <a href="/dashboard/earnings" class="sidebar-link">
+                <i class="bi bi-currency-dollar"></i> Earnings
+            </a>
+            <a href="/dashboard/withdraw" class="sidebar-link active">
+                <i class="bi bi-wallet2"></i> Withdraw
+            </a>
+            <a href="/dashboard/referral" class="sidebar-link">
+                <i class="bi bi-people"></i> Referrals
+            </a>
+            <a href="/dashboard/settings" class="sidebar-link">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </nav>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <h1>Withdraw Funds</h1>
+            <p>Request a withdrawal to your preferred payment method</p>
+        </div>
+        
+        <!-- Balance Card -->
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="balance-amount">$<%= user.pendingEarnings.toFixed(2) %></h2>
+                <p class="balance-label">Available Balance</p>
+                <p class="text-muted">Minimum withdrawal: $<%= minPayout.toFixed(2) %></p>
+            </div>
+        </div>
+        
+        <% if (user.pendingEarnings >= minPayout) { %>
+            <!-- Withdraw Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-wallet2"></i> Request Withdrawal</h2>
+                </div>
+                <div class="card-body">
+                    <form id="withdrawForm" class="withdraw-form">
+                        <div class="form-group">
+                            <label for="amount">Amount ($)</label>
+                            <input type="number" id="amount" name="amount" 
+                                   min="<%= minPayout %>" 
+                                   max="<%= user.pendingEarnings %>" 
+                                   step="0.01"
+                                   value="<%= user.pendingEarnings.toFixed(2) %>"
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentType" value="upi" checked>
+                                    <div class="method-card">
+                                        <i class="bi bi-phone"></i>
+                                        <span>UPI</span>
+                                    </div>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentType" value="bank_transfer">
+                                    <div class="method-card">
+                                        <i class="bi bi-bank"></i>
+                                        <span>Bank Transfer</span>
+                                    </div>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentType" value="paypal">
+                                    <div class="method-card">
+                                        <i class="bi bi-paypal"></i>
+                                        <span>PayPal</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- UPI Fields -->
+                        <div id="upiFields" class="payment-fields">
+                            <div class="form-group">
+                                <label for="upiId">UPI ID</label>
+                                <input type="text" id="upiId" name="upiId" placeholder="yourname@upi">
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Transfer Fields -->
+                        <div id="bankFields" class="payment-fields hidden">
+                            <div class="form-group">
+                                <label for="accountHolderName">Account Holder Name</label>
+                                <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Full name as per bank">
+                            </div>
+                            <div class="form-group">
+                                <label for="bankName">Bank Name</label>
+                                <input type="text" id="bankName" name="bankName" placeholder="Bank name">
+                            </div>
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number</label>
+                                <input type="text" id="accountNumber" name="accountNumber" placeholder="Account number">
+                            </div>
+                            <div class="form-group">
+                                <label for="ifscCode">IFSC Code</label>
+                                <input type="text" id="ifscCode" name="ifscCode" placeholder="IFSC code">
+                            </div>
+                        </div>
+                        
+                        <!-- PayPal Fields -->
+                        <div id="paypalFields" class="payment-fields hidden">
+                            <div class="form-group">
+                                <label for="paypalEmail">PayPal Email</label>
+                                <input type="email" id="paypalEmail" name="paypalEmail" placeholder="your@email.com">
+                            </div>
+                        </div>
+                        
+                        <div id="withdrawError" class="alert alert-error hidden"></div>
+                        <div id="withdrawSuccess" class="alert alert-success hidden"></div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="bi bi-send"></i> Submit Withdrawal Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="empty-state">
+                        <i class="bi bi-wallet2"></i>
+                        <h3>Insufficient Balance</h3>
+                        <p>You need at least $<%= minPayout.toFixed(2) %> to withdraw.</p>
+                        <p>You need $<%= (minPayout - user.pendingEarnings).toFixed(2) %> more.</p>
+                        <a href="/dashboard/links" class="btn btn-primary">Create More Links</a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <!-- Info Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-info-circle"></i> Withdrawal Information</h2>
+            </div>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><i class="bi bi-check-circle"></i> Minimum withdrawal amount: $<%= minPayout.toFixed(2) %></li>
+                    <li><i class="bi bi-check-circle"></i> Withdrawals are processed within 24-48 hours</li>
+                    <li><i class="bi bi-check-circle"></i> UPI payments are instant once approved</li>
+                    <li><i class="bi bi-check-circle"></i> Bank transfers may take 2-3 business days</li>
+                    <li><i class="bi bi-check-circle"></i> PayPal payments are processed within 24 hours</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Payment method toggle
+    var paymentRadios = document.querySelectorAll('input[name="paymentType"]');
+    paymentRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('.payment-fields').forEach(function(f) {
+                f.classList.add('hidden');
+            });
+            
+            if (this.value === 'upi') {
+                document.getElementById('upiFields').classList.remove('hidden');
+            } else if (this.value === 'bank_transfer') {
+                document.getElementById('bankFields').classList.remove('hidden');
+            } else if (this.value === 'paypal') {
+                document.getElementById('paypalFields').classList.remove('hidden');
+            }
+        });
+    });
+    
+    // Form submission
+    var form = document.getElementById('withdrawForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = new FormData(form);
+            var data = {};
+            formData.forEach(function(value, key) {
+                data[key] = value;
+            });
+            
+            document.getElementById('withdrawError').classList.add('hidden');
+            document.getElementById('withdrawSuccess').classList.add('hidden');
+            
+            fetch('/dashboard/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(result) {
+                if (result.success) {
+                    document.getElementById('withdrawSuccess').textContent = result.message;
+                    document.getElementById('withdrawSuccess').classList.remove('hidden');
+                    setTimeout(function() {
+                        window.location.href = '/dashboard/earnings';
+                    }, 2000);
+                } else {
+                    document.getElementById('withdrawError').textContent = result.error;
+                    document.getElementById('withdrawError').classList.remove('hidden');
+                }
+            })
+            .catch(function(err) {
+                document.getElementById('withdrawError').textContent = 'An error occurred. Please try again.';
+                document.getElementById('withdrawError').classList.remove('hidden');
+            });
+        });
+    }
+</script>
+
+<%- include('../partials/footer') %>

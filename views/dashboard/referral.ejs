@@ -1,0 +1,192 @@
+<%- include('../partials/header', { title: 'Referrals' }) %>
+
+<div class="dashboard">
+    <div class="dashboard-sidebar">
+        <div class="sidebar-user">
+            <% if (user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="" class="sidebar-avatar">
+            <% } else { %>
+                <div class="sidebar-avatar-placeholder">
+                    <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <h3><%= user.name %></h3>
+            <p><%= user.email %></p>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/dashboard/links" class="sidebar-link">
+                <i class="bi bi-link-45deg"></i> My Links
+            </a>
+            <a href="/dashboard/earnings" class="sidebar-link">
+                <i class="bi bi-currency-dollar"></i> Earnings
+            </a>
+            <a href="/dashboard/withdraw" class="sidebar-link">
+                <i class="bi bi-wallet2"></i> Withdraw
+            </a>
+            <a href="/dashboard/referral" class="sidebar-link active">
+                <i class="bi bi-people"></i> Referrals
+            </a>
+            <a href="/dashboard/settings" class="sidebar-link">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </nav>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <h1>Referral Program</h1>
+            <p>Earn <%= user.referralCommission %>% of your referrals' earnings!</p>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-info">
+                    <h3><%= user.referralCount %></h3>
+                    <p>Total Referrals</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$<%= user.referralEarnings.toFixed(2) %></h3>
+                    <p>Referral Earnings</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="bi bi-percent"></i>
+                </div>
+                <div class="stat-info">
+                    <h3><%= user.referralCommission %>%</h3>
+                    <p>Commission Rate</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Referral Link -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-link-45deg"></i> Your Referral Link</h2>
+            </div>
+            <div class="card-body">
+                <div class="referral-link-box">
+                    <input type="text" id="referralLink" value="<%= referralLink %>" readonly>
+                    <button type="button" id="copyReferralBtn" class="btn btn-primary">
+                        <i class="bi bi-clipboard"></i> Copy
+                    </button>
+                </div>
+                <p class="referral-code">Your referral code: <strong><%= user.referralCode %></strong></p>
+                
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=Join%20FlashURL%20and%20start%20earning%20from%20your%20links!&url=<%= encodeURIComponent(referralLink) %>" 
+                       target="_blank" class="btn btn-twitter">
+                        <i class="bi bi-twitter"></i> Share on Twitter
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(referralLink) %>" 
+                       target="_blank" class="btn btn-facebook">
+                        <i class="bi bi-facebook"></i> Share on Facebook
+                    </a>
+                    <a href="https://wa.me/?text=Join%20FlashURL%20and%20start%20earning%20from%20your%20links!%20<%= encodeURIComponent(referralLink) %>" 
+                       target="_blank" class="btn btn-whatsapp">
+                        <i class="bi bi-whatsapp"></i> Share on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- How it works -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-question-circle"></i> How It Works</h2>
+            </div>
+            <div class="card-body">
+                <div class="how-it-works">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Share Your Link</h4>
+                            <p>Share your unique referral link with friends, on social media, or your website.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>They Sign Up</h4>
+                            <p>When someone signs up using your link, they become your referral.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>You Earn</h4>
+                            <p>You earn <%= user.referralCommission %>% of all their earnings, forever!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Referred Users -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-people"></i> Your Referrals</h2>
+            </div>
+            <div class="card-body">
+                <% if (referredUsers.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% referredUsers.forEach(function(refUser) { %>
+                                    <tr>
+                                        <td><%= refUser.name %></td>
+                                        <td><%= refUser.email.substring(0, 3) %>***@***</td>
+                                        <td><%= refUser.createdAt.toLocaleDateString() %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <i class="bi bi-people"></i>
+                        <p>No referrals yet. Share your link to start earning!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('copyReferralBtn').addEventListener('click', function() {
+        var input = document.getElementById('referralLink');
+        input.select();
+        document.execCommand('copy');
+        this.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        var btn = this;
+        setTimeout(function() {
+            btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+        }, 2000);
+    });
+</script>
+
+<%- include('../partials/footer') %>
