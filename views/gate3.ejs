@@ -1,0 +1,107 @@
+<! DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Step - Get Your Link!  - FlashURL</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ FlashURL</h1>
+        </header>
+
+        <main>
+            <div class="card redirect-card">
+                <div class="step-progress">
+                    <div class="step completed">✓</div>
+                    <div class="step-line completed"></div>
+                    <div class="step completed">✓</div>
+                    <div class="step-line completed"></div>
+                    <div class="step active">3</div>
+                </div>
+                <p class="step-text">Final Step! </p>
+
+                <h2>🎉 Your link is ready!</h2>
+
+                <div class="ad-container">
+                    <div class="ad-box">
+                        <p class="ad-placeholder">Advertisement</p>
+                    </div>
+                </div>
+
+                <div class="countdown" id="countdownSection">
+                    <p>Please wait <span id="timer" class="timer-count">5</span> seconds</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                </div>
+
+                <div id="captchaSection" class="captcha-section hidden">
+                    <p>Verify you're human to get your link: </p>
+                    <div class="recaptcha-container">
+                        <div class="g-recaptcha" 
+                             data-sitekey="<%= siteKey %>" 
+                             data-callback="onCaptchaSuccess"
+                             data-size="normal">
+                        </div>
+                    </div>
+                    <p class="captcha-note">Just click the checkbox!  ✅</p>
+                </div>
+
+                <div id="getLinkSection" class="get-link-section hidden">
+                    <p class="success-text">✅ Verified! Click below to continue</p>
+                    <a href="<%= originalUrl %>" id="getLinkBtn" class="btn btn-success">
+                        🔗 GET LINK
+                    </a>
+                </div>
+
+                <div class="destination">
+                    <p>Destination:</p>
+                    <code><%= originalUrl %></code>
+                </div>
+
+                <div class="ad-container">
+                    <div class="ad-box">
+                        <p class="ad-placeholder">Advertisement</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 FlashURL.  Made with ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        var timeLeft = 5;
+        var timerEl = document.getElementById('timer');
+        var progressEl = document. getElementById('progress');
+        var countdownSection = document.getElementById('countdownSection');
+        var captchaSection = document.getElementById('captchaSection');
+        var getLinkSection = document. getElementById('getLinkSection');
+
+        var countdown = setInterval(function() {
+            timeLeft = timeLeft - 1;
+            timerEl.textContent = timeLeft;
+            progressEl.style.width = ((5 - timeLeft) / 5 * 100) + '%';
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                countdownSection.style.display = 'none';
+                captchaSection.style.display = 'block';
+                captchaSection.classList.remove('hidden');
+            }
+        }, 1000);
+
+        function onCaptchaSuccess(token) {
+            captchaSection.style.display = 'none';
+            getLinkSection.style. display = 'block';
+            getLinkSection.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

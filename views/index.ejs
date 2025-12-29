@@ -1,0 +1,70 @@
+<! DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashURL - Free URL Shortener</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ FlashURL</h1>
+            <p class="tagline">Shorten your links in a flash!</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <form id="urlForm">
+                    <div class="input-group">
+                        <input 
+                            type="url" 
+                            id="originalUrl" 
+                            placeholder="Paste your long URL here..." 
+                            required
+                        >
+                        <button type="submit" id="submitBtn">
+                            Shorten ⚡
+                        </button>
+                    </div>
+                </form>
+
+                <div id="result" class="result hidden">
+                    <p>Your shortened URL: </p>
+                    <div class="result-box">
+                        <input type="text" id="shortUrl" readonly>
+                        <button type="button" id="copyBtn">📋 Copy</button>
+                    </div>
+                    <p id="copyMsg" class="copy-msg hidden">✅ Copied! </p>
+                </div>
+
+                <div id="error" class="error hidden"></div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <span class="icon">🚀</span>
+                    <h3>Fast</h3>
+                    <p>Instant URL shortening</p>
+                </div>
+                <div class="feature">
+                    <span class="icon">🔒</span>
+                    <h3>Secure</h3>
+                    <p>Protected links</p>
+                </div>
+                <div class="feature">
+                    <span class="icon">📊</span>
+                    <h3>Free</h3>
+                    <p>100% free to use</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 FlashURL.  Made with ❤️</p>
+        </footer>
+    </div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

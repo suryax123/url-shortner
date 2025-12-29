@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1 of 3 - FlashURL</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ FlashURL</h1>
+        </header>
+
+        <main>
+            <div class="card redirect-card">
+                <!-- Progress Bar -->
+                <div class="step-progress">
+                    <div class="step active">1</div>
+                    <div class="step-line"></div>
+                    <div class="step">2</div>
+                    <div class="step-line"></div>
+                    <div class="step">3</div>
+                </div>
+                <p class="step-text">Step 1 of 3</p>
+
+                <h2>🔗 Getting your link...</h2>
+
+                <!-- Ad Space Top -->
+                <div class="ad-container">
+                    <div class="ad-box">
+                        <p class="ad-placeholder">Advertisement</p>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="countdown">
+                    <p>Please wait <span id="timer" class="timer-count">8</span> seconds</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                </div>
+
+                <!-- Continue Button (hidden initially) -->
+                <a href="/step2/<%= shortId %>" id="continueBtn" class="btn hidden">
+                    Continue to Step 2 →
+                </a>
+
+                <!-- Ad Space Bottom -->
+                <div class="ad-container">
+                    <div class="ad-box">
+                        <p class="ad-placeholder">Advertisement</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 FlashURL.  Made with ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        let timeLeft = 8;
+        const timerEl = document.getElementById('timer');
+        const progressEl = document. getElementById('progress');
+        const continueBtn = document.getElementById('continueBtn');
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerEl. textContent = timeLeft;
+            progressEl.style.width = ((8 - timeLeft) / 8 * 100) + '%';
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                continueBtn.classList. remove('hidden');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

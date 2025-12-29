@@ -1,0 +1,471 @@
+/* ========== RESET & BASE ========== */
+* {
+    margin:  0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:  linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%);
+    min-height: 100vh;
+    color: #2d3436;
+}
+
+/* ========== CONTAINER ========== */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding:  20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction:  column;
+}
+
+/* ========== HEADER ========== */
+header {
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+header h1 {
+    font-size:  3rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+}
+
+/* ========== MAIN ========== */
+main {
+    flex:  1;
+}
+
+/* ========== CARD ========== */
+.card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+/* ========== FORM ========== */
+#urlForm {
+    display: flex;
+    flex-direction: column;
+    gap:  20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #6c5ce7;
+}
+
+.input-group button,
+.btn {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #6c5ce7;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.input-group button:hover,
+.btn:hover {
+    background:  #5b4cdb;
+    transform:  translateY(-2px);
+    box-shadow: 0 5px 20px rgba(108, 92, 231, 0.4);
+}
+
+.input-group button:disabled {
+    background: #636e72;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ========== RESULT ========== */
+.result {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f5f6fa;
+    border-radius:  10px;
+    text-align: center;
+}
+
+.result p {
+    margin-bottom: 15px;
+    color: #636e72;
+}
+
+.result-box {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.result-box input {
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: 2px solid #6c5ce7;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #6c5ce7;
+    font-weight: 600;
+    min-width: 250px;
+    text-align: center;
+}
+
+.result-box button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: #00b894;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.result-box button:hover {
+    background: #00a383;
+}
+
+.copy-msg {
+    color: #00b894;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* ========== ERROR ========== */
+.error {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ffe6e6;
+    color: #d63031;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* ========== FEATURES ========== */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature .icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    color: #2d3436;
+    margin-bottom:  10px;
+}
+
+.feature p {
+    color:  #636e72;
+    font-size: 0.9rem;
+}
+
+/* ========== FOOTER ========== */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========== 3-GATE SYSTEM ========== */
+
+/* Step Progress Bar */
+.step-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 0;
+}
+
+.step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #666;
+    display:  flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.step.active {
+    background: #6c5ce7;
+    color: white;
+}
+
+.step.completed {
+    background: #00b894;
+    color:  white;
+}
+
+.step-line {
+    width:  50px;
+    height:  4px;
+    background: #ddd;
+}
+
+.step-line.completed {
+    background:  #00b894;
+}
+
+.step-text {
+    text-align: center;
+    color: #636e72;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* Timer Count */
+.timer-count {
+    font-size: 2rem;
+    font-weight: 700;
+    color:  #6c5ce7;
+}
+
+/* Redirect Card */
+.redirect-card {
+    text-align: center;
+}
+
+.redirect-card h2 {
+    margin-bottom: 20px;
+    color: #2d3436;
+}
+
+/* Countdown */
+.countdown {
+    margin:  30px 0;
+    text-align: center;
+}
+
+.countdown p {
+    font-size: 1.2rem;
+    color: #636e72;
+    margin-bottom: 15px;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6c5ce7, #00cec9);
+    transition: width 1s linear;
+}
+
+/* Captcha Section */
+.captcha-section {
+    text-align: center;
+    margin:  30px 0;
+    padding: 20px;
+    background:  #f5f6fa;
+    border-radius:  10px;
+}
+
+.captcha-section p {
+    margin-bottom: 15px;
+    color: #636e72;
+    font-size: 1.1rem;
+}
+
+.recaptcha-container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Get Link Section */
+.get-link-section {
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* Get Link Button */
+.btn-success {
+    background: #00b894;
+    color: white;
+    font-size: 1.3rem;
+    padding: 20px 50px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    animation:  pulse 1.5s infinite;
+}
+
+.btn-success:hover {
+    background:  #00a383;
+    transform: translateY(-2px);
+}
+
+@keyframes pulse {
+    0% { transform:  scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Destination Box */
+.destination {
+    margin: 30px 0;
+    padding: 20px;
+    background:  #f5f6fa;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.destination p {
+    color: #636e72;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.destination code {
+    display: block;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    word-break: break-all;
+    color: #6c5ce7;
+    font-size:  0.9rem;
+}
+
+/* Ad Container */
+.ad-container {
+    margin: 25px 0;
+}
+
+.ad-box {
+    background: #f5f6fa;
+    border:  2px dashed #ddd;
+    border-radius:  10px;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 100px;
+}
+
+.ad-placeholder {
+    color:  #636e72;
+    font-size: 0.9rem;
+}
+
+/* 404 Page */
+.error-card {
+    text-align: center;
+}
+
+.error-card h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #2d3436;
+}
+
+.error-card p {
+    color: #636e72;
+    margin-bottom: 30px;
+}
+
+/* Hidden class */
+.hidden {
+    display:  none ! important;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .card {
+        padding:  25px;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .result-box {
+        flex-direction: column;
+    }
+
+    .result-box input {
+        min-width: 100%;
+    }
+
+    .btn-success {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+    }
+}
+/* Captcha Note */
+.captcha-note {
+    margin-top: 15px;
+    color: #00b894;
+    font-size: 0.9rem;
+}
+
+/* Success Text */
+.success-text {
+    color: #00b894;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
