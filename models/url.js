@@ -111,8 +111,7 @@ urlSchema.pre('save', function(next) {
     next();
 });
 
-// Indexes for performance
-urlSchema.index({ shortId: 1 });
+// Indexes for performance (shortId already has unique: true)
 urlSchema.index({ user: 1 });
 urlSchema.index({ createdAt: -1 });
 urlSchema.index({ 'dailyStats.date': 1 });

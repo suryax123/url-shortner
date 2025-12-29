@@ -184,10 +184,9 @@ userSchema.methods.canWithdraw = function() {
     return this.pendingEarnings >= 5;
 };
 
-// Add indexes for better performance
-userSchema.index({ email: 1 });
-userSchema.index({ googleId: 1 });
-userSchema.index({ referralCode: 1 });
+// Add indexes for better performance (only for non-unique fields)
 userSchema.index({ status: 1 });
+userSchema.index({ referredBy: 1 });
+userSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('User', userSchema);
