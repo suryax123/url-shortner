@@ -1,5 +1,0 @@
-PORT=3000
-MONGODB_URI=mongodb+srv://surya_dbuser:Surya%40369@linkshortner.pxt6x3h.mongodb.net/?appName=linkshortner
-RECAPTCHA_SITE_KEY=6Lc1bzksAAAAAM72j1LcJaIUyNNvgwHJmffg9ldh
-RECAPTCHA_SECRET_KEY=6Lc1bzksAAAAAJZnbUklXVTot3Q41SB_ze9QRQG3
-BASE_URL=http://localhost:3000
