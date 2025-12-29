@@ -24,12 +24,21 @@
                 </div>
                 <p class="step-text">Step 2 of 3</p>
 
-                <h2>🔗 Almost there... </h2>
+                <h2>🔗 Almost there...</h2>
 
-                <!-- Ad Space Top -->
+                <!-- Banner Ad Top -->
                 <div class="ad-container">
-                    <div class="ad-box">
-                        <p class="ad-placeholder">Advertisement</p>
+                    <div class="ad-box banner-ad">
+                        <script>
+                            atOptions = {
+                                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                        <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js"></script>
                     </div>
                 </div>
 
@@ -46,10 +55,19 @@
                     Continue to Final Step →
                 </a>
 
-                <!-- Ad Space Bottom -->
+                <!-- Banner Ad Bottom -->
                 <div class="ad-container">
-                    <div class="ad-box">
-                        <p class="ad-placeholder">Advertisement</p>
+                    <div class="ad-box banner-ad">
+                        <script>
+                            atOptions = {
+                                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                        <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js"></script>
                     </div>
                 </div>
             </div>
@@ -60,13 +78,16 @@
         </footer>
     </div>
 
+    <!-- Ad Blocker Detection -->
+    <script src="/js/adblock-detect.js"></script>
+    
     <script>
-        let timeLeft = 8;
-        const timerEl = document.getElementById('timer');
-        const progressEl = document.getElementById('progress');
-        const continueBtn = document.getElementById('continueBtn');
+        var timeLeft = 8;
+        var timerEl = document.getElementById('timer');
+        var progressEl = document.getElementById('progress');
+        var continueBtn = document.getElementById('continueBtn');
 
-        const countdown = setInterval(() => {
+        var countdown = setInterval(function() {
             timeLeft--;
             timerEl.textContent = timeLeft;
             progressEl.style.width = ((8 - timeLeft) / 8 * 100) + '%';
@@ -78,7 +99,7 @@
         }, 1000);
     </script>
 
-    <!-- Adsterra Social Bar Ad -->
+    <!-- Adsterra Social Bar Ad (bypasses ad blockers) -->
     <script src="https://pl28355881.effectivegatecpm.com/41/b9/68/41b9683409b2e1df660f482f0a40d231.js"></script>
 </body>
 </html>
