@@ -23,16 +23,33 @@
       <!-- Top banner ad (mobile-friendly) -->
       <div class="ad-container banner-top" aria-hidden="false">
         <div class="ad-box banner-ad" role="region" aria-label="Advertisement - banner top">
-          <script>
-            atOptions = {
-              'key' : '3eff8504b33c6f3f2949267088e6b4c3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 320,
-              'params' : {}
-            };
-          </script>
-          <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js"></script>
+      <div id="bannerTop-<%= shortId %>" class="ad-slot" aria-hidden="false"></div>
+      <script>
+        (function(){
+          var containerId = 'bannerTop-<%= shortId %>';
+          // ensure loader present
+          function loadInvoke(){
+            if (window.adLoader) {
+              // set atOptions for legacy invoke script
+              window.atOptions = {
+                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 320,
+                'params' : {}
+              };
+              adLoader.loadScript('https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js', {timeout:7000, retries:1})
+                .catch(function(){ adLoader.showFallback(document.getElementById(containerId)); });
+            } else {
+              var s = document.createElement('script');
+              s.src = '/js/ads-loader.js';
+              s.onload = function(){ loadInvoke(); };
+              document.head.appendChild(s);
+            }
+          }
+          loadInvoke();
+        })();
+      </script>
         </div>
       </div>
 
@@ -45,22 +62,49 @@
 
       <!-- Bottom banner ad (mobile-friendly) -->
       <div class="ad-container banner-bottom">
-        <div class="ad-box banner-ad" role="region" aria-label="Advertisement - banner bottom">
-          <script>
-            atOptions = {
-              'key' : '3eff8504b33c6f3f2949267088e6b4c3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 320,
-              'params' : {}
-            };
-          </script>
-          <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js"></script>
-        </div>
+        <div id="bannerBottom-<%= shortId %>" class="ad-box banner-ad" role="region" aria-label="Advertisement - banner bottom"></div>
       </div>
+      <script>
+        (function(){
+          var containerId = 'bannerBottom-<%= shortId %>';
+          function loadInvokeBottom(){
+            if (window.adLoader) {
+              window.atOptions = {
+                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 320,
+                'params' : {}
+              };
+              adLoader.loadScript('https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js', {timeout:7000, retries:1})
+                .catch(function(){ adLoader.showFallback(document.getElementById(containerId)); });
+            } else {
+              var s = document.createElement('script');
+              s.src = '/js/ads-loader.js';
+              s.onload = function(){ loadInvokeBottom(); };
+              document.head.appendChild(s);
+            }
+          }
+          loadInvokeBottom();
+        })();
+      </script>
 
       <!-- Social bar (kept, placed fixed bottom for mobile) -->
-      <div id="socialBarPlaceholder" aria-hidden="true"></div>
+      <div id="socialBarContainer-<%= shortId %>" aria-hidden="true"></div>
+      <script>
+        (function(){
+          var containerId = 'socialBarContainer-<%= shortId %>';
+          var scriptUrl = 'https://pl28355881.effectivegatecpm.com/41/b9/68/41b9683409b2e1df660f482f0a40d231.js';
+          if (window.adLoader) {
+            adLoader.loadSocialBar(scriptUrl, containerId, '<div class="social-fallback">Connect</div>');
+          } else {
+            var s = document.createElement('script');
+            s.src = '/js/ads-loader.js';
+            s.onload = function(){ adLoader.loadSocialBar(scriptUrl, containerId, '<div class="social-fallback">Connect</div>'); };
+            document.head.appendChild(s);
+          }
+        })();
+      </script>
 
       <div class="destination">
         <p>Destination</p>

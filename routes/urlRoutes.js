@@ -182,7 +182,7 @@ router.get('/:shortId', async function(req, res) {
             }
         }
 
-        res.render('gate1', { shortId: shortId });
+        res.render('gate1', { shortId: shortId, originalUrl: url.originalUrl });
 
     } catch (error) {
         console.error('Error:', error);
