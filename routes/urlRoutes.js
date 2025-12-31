@@ -200,7 +200,7 @@ router.get('/step2/:shortId', async function(req, res) {
             return res.status(404).render('404');
         }
 
-        res.render('gate2', { shortId: shortId });
+        res.render('gate2', { shortId: shortId, originalUrl: url.originalUrl });
 
     } catch (error) {
         console.error('Error:', error);
