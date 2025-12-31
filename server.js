@@ -36,7 +36,8 @@ app.use(helmet({
                 "https://www.highperformanceformat.com",
                 "https://*.highperformanceformat.com",
                 "https://cdn.jsdelivr.net",
-                "https://preferencenail.com"
+                "https://preferencenail.com",
+                "https://creative-sb1.com"
             ],
             frameSrc: [
                 "https://www.google.com",
