@@ -1,148 +1,345 @@
-<![CDATA[<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Step 1 — FlashURL</title>
   <link rel="stylesheet" href="/css/style.css" />
-  <script>
-    // Ensure provider sees atOptions before their invoke.js runs
-    window.atOptions = window.atOptions || {
-      key: '3eff8504b33c6f3f2949267088e6b4c3',
-      format: 'iframe',
-      height: 60,
-      width: 320,
-      params: {}
-    };
-  </script>
+  <style>
+    /* New gate-specific styles */
+    .gate-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .gate-card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      gap: 15px;
+    }
+    
+    .step-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: white;
+    }
+    
+    .step-dot.active {
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+    }
+    
+    .step-dot.completed {
+      background: #00b894;
+    }
+    
+    .step-dot.inactive {
+      background: #e0e0e0;
+      color: #636e72;
+    }
+    
+    .step-line {
+      height: 4px;
+      width: 60px;
+      background: #e0e0e0;
+      border-radius: 2px;
+    }
+    
+    .step-line.active {
+      background: linear-gradient(90deg, #6c5ce7, #00cec9);
+    }
+    
+    .gate-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .gate-title {
+      font-size: 28px;
+      color: #2d3436;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .gate-subtitle {
+      color: #636e72;
+      font-size: 16px;
+    }
+    
+    .timer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    
+    .timer-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .timer-circle::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      z-index: -1;
+      opacity: 0.1;
+    }
+    
+    .timer-number {
+      font-size: 48px;
+      font-weight: bold;
+      color: #6c5ce7;
+      line-height: 1;
+    }
+    
+    .timer-label {
+      font-size: 14px;
+      color: #636e72;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 5px;
+    }
+    
+    .progress-container {
+      width: 100%;
+      max-width: 400px;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #6c5ce7, #00cec9);
+      width: 0%;
+      transition: width 1s linear;
+    }
+    
+    .ad-container {
+      margin: 25px 0;
+      text-align: center;
+    }
+    
+    .ad-label {
+      font-size: 12px;
+      color: #636e72;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .ad-slot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f5f6fa;
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 70px;
+      padding: 10px;
+    }
+    
+    .continue-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+      margin-top: 20px;
+    }
+    
+    .continue-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+    }
+    
+    .continue-btn.hidden {
+      display: none;
+    }
+    
+    .social-bar {
+      background: #f5f6fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .gate-container {
+        padding: 15px;
+      }
+      
+      .gate-card {
+        padding: 20px;
+      }
+      
+      .gate-title {
+        font-size: 24px;
+      }
+      
+      .timer-circle {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .timer-number {
+        font-size: 36px;
+      }
+    }
+  </style>
 </head>
-<body>
-  <main class="container">
-    <section class="card redirect-card" role="main" aria-labelledby="step-title">
-      <div class="step-progress" aria-hidden="true">
-        <div class="step active">1</div>
+<body class="gate-page gate-step-1">
+  <div class="gate-container">
+    <!-- Top banner ad -->
+    <div class="ad-container">
+      <div class="ad-label">Advertisement</div>
+      <div id="bannerTop-<%= shortId %>" class="ad-slot">
+        <!-- Adsterra banner ad -->
+        <script>
+          atOptions = {
+            'key': '3eff8504b33c6f3f2949267088e6b4c3',
+            'format': 'iframe',
+            'height': 60,
+            'width': 468,
+            'params': {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js" async></script>
+      </div>
+    </div>
+
+    <div class="gate-card">
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <div class="step-dot active">1</div>
         <div class="step-line"></div>
-        <div class="step">2</div>
+        <div class="step-dot inactive">2</div>
         <div class="step-line"></div>
-        <div class="step">3</div>
+        <div class="step-dot inactive">3</div>
       </div>
 
-      <h2 id="step-title">Preparing your link…</h2>
-      <p class="step-text">Please wait while we prepare your destination. Ads keep this service free.</p>
+      <!-- Gate header -->
+      <div class="gate-header">
+        <h1 class="gate-title">Preparing your link</h1>
+        <p class="gate-subtitle">Please wait while we prepare your destination. Ads keep this service free.</p>
+      </div>
 
-      <!-- Top banner ad (mobile-friendly) -->
-      <div class="ad-container banner-top" aria-hidden="false">
-        <div class="ad-box banner-ad" role="region" aria-label="Advertisement - banner top">
-      <div id="bannerTop-<%= shortId %>" class="ad-slot" aria-hidden="false"></div>
-      <script>
-        (function(){
-          var containerId = 'bannerTop-<%= shortId %>';
-          // ensure loader present
-          function loadInvoke(){
-            if (window.adLoader) {
-              // set atOptions for legacy invoke script
-              window.atOptions = {
-                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 320,
-                'params' : {}
-              };
-              adLoader.loadScript('https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js', {timeout:7000, retries:1, async:false})
-                .catch(function(){ adLoader.showFallback(document.getElementById(containerId)); });
-            } else {
-              var s = document.createElement('script');
-              s.src = '/js/ads-loader.js';
-              s.onload = function(){ loadInvoke(); };
-              document.head.appendChild(s);
-            }
-          }
-          loadInvoke();
-        })();
-      </script>
+      <!-- Timer and progress -->
+      <div class="timer-container">
+        <div class="timer-circle">
+          <div class="timer-number" id="timer1">8</div>
+          <div class="timer-label">seconds</div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progress1"></div>
         </div>
       </div>
 
-      <div class="countdown" aria-live="polite">
-        <p>Please wait <span id="timer1" class="timer-count">8</span>s</p>
-        <div class="progress-bar"><div id="progress1" class="progress"></div></div>
+      <!-- Continue button -->
+      <div style="text-align: center;">
+        <button id="continueBtn1" class="continue-btn hidden" data-href="/step2/<%= shortId %>">
+          Continue to Next Step <span style="margin-left: 10px;">→</span>
+        </button>
       </div>
 
-      <a id="continueBtn1" class="btn hidden" href="/step2/<%= shortId %>">Continue</a>
-
-      <!-- Bottom banner ad (mobile-friendly) -->
-      <div class="ad-container banner-bottom">
-        <div id="bannerBottom-<%= shortId %>" class="ad-box banner-ad" role="region" aria-label="Advertisement - banner bottom"></div>
+      <!-- Social bar ad -->
+      <div class="social-bar">
+        <div id="socialBarContainer-<%= shortId %>">
+        <!-- Adsterra social bar ad -->
+          <script src="https://pl28355881.effectivegatecpm.com/41/b9/68/41b9683409b2e1df660f482f0a40d231.js"></script>
+        </div>
       </div>
-      <script>
-        (function(){
-          var containerId = 'bannerBottom-<%= shortId %>';
-          function loadInvokeBottom(){
-            if (window.adLoader) {
-              window.atOptions = {
-                'key' : '3eff8504b33c6f3f2949267088e6b4c3',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 320,
-                'params' : {}
-              };
-              adLoader.loadScript('https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js', {timeout:7000, retries:1, async:false})
-                .catch(function(){ adLoader.showFallback(document.getElementById(containerId)); });
-            } else {
-              var s = document.createElement('script');
-              s.src = '/js/ads-loader.js';
-              s.onload = function(){ loadInvokeBottom(); };
-              document.head.appendChild(s);
-            }
-          }
-          loadInvokeBottom();
-        })();
-      </script>
+    </div>
 
-      <!-- Social bar (kept, placed fixed bottom for mobile) -->
-      <div id="socialBarContainer-<%= shortId %>" aria-hidden="true"></div>
-      <script>
-        (function(){
-          var containerId = 'socialBarContainer-<%= shortId %>';
-          var scriptUrl = 'https://pl28355881.effectivegatecpm.com/41/b9/68/41b9683409b2e1df660f482f0a40d231.js';
-          if (window.adLoader) {
-            adLoader.loadSocialBar(scriptUrl, containerId, '<div class="social-fallback">Connect</div>');
-          } else {
-            var s = document.createElement('script');
-            s.src = '/js/ads-loader.js';
-            s.onload = function(){ adLoader.loadSocialBar(scriptUrl, containerId, '<div class="social-fallback">Connect</div>'); };
-            document.head.appendChild(s);
-          }
-        })();
-      </script>
-
-      <div class="destination">
-        <p>Destination</p>
-        <code><%= originalUrl %></code>
+    <!-- Bottom banner ad -->
+    <div class="ad-container">
+      <div class="ad-label">Advertisement</div>
+      <div id="bannerBottom-<%= shortId %>" class="ad-slot">
+        <!-- Adsterra banner ad -->
+        <script>
+          atOptions = {
+            'key': '3eff8504b33c6f3f2949267088e6b4c3',
+            'format': 'iframe',
+            'height': 60,
+            'width': 468,
+            'params': {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/3eff8504b33c6f3f2949267088e6b4c3/invoke.js" async></script>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <p>© 2025 FlashURL</p>
-  </footer>
+    <footer style="text-align: center; padding: 20px 0; color: #636e72; font-size: 14px;">
+      <p>© 2025 FlashURL</p>
+    </footer>
+  </div>
 
   <script>
     (function(){
-      var timeLeft = 8;
-      var timer = document.getElementById('timer1');
+      var DURATION = 8;
+      var timeLeft = DURATION;
+      var timerEl = document.getElementById('timer1');
       var progress = document.getElementById('progress1');
       var btn = document.getElementById('continueBtn1');
 
+      function updateUI() {
+        if (timerEl) timerEl.textContent = timeLeft;
+        if (progress) progress.style.width = ((DURATION - timeLeft) / DURATION * 100) + '%';
+      }
+
+      updateUI();
       var interval = setInterval(function(){
         timeLeft--;
-        if (timer) timer.textContent = timeLeft;
-        if (progress) progress.style.width = ((8 - timeLeft)/8*100) + '%';
+        updateUI();
         if (timeLeft <= 0) {
           clearInterval(interval);
           if (btn) {
             btn.classList.remove('hidden');
-            btn.setAttribute('aria-hidden','false');
+            btn.addEventListener('click', function(){ window.location.href = btn.getAttribute('data-href'); });
           }
         }
       }, 1000);
@@ -150,6 +347,6 @@
   </script>
 
   <script src="/js/adblock-detect.js"></script>
-  <script src="https://pl28355881.effectivegatecpm.com/41/b9/68/41b9683409b2e1df660f482f0a40d231.js" async></script>
+  <script src="/js/ads-loader.js"></script>
 </body>
-</html>]]>
+</html>
