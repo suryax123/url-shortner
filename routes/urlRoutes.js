@@ -85,8 +85,8 @@ router.get('/:shortId', async function(req, res) {
         // Check if user-agent contains "Telegram" (case-insensitive)
         const userAgent = req.headers['user-agent'] || '';
         if (userAgent.toLowerCase().includes('telegram')) {
-            // Redirect to Telegram redirect page with original URL
-            return res.redirect(`/redirect?url=${encodeURIComponent(req.protocol + '://' + req.get('host') + '/' + shortId)}`);
+            // Direct HTTP 302 redirect to Chrome
+            return res.redirect(302, 'https://www.google.com/chrome/');
         }
         
         const url = await Url.findOne({ shortId: shortId, isActive: true });
