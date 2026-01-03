@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Redirecting to Chrome</title>
+  <!-- Meta Refresh Redirect - works even when JavaScript is disabled -->
+  <meta http-equiv="refresh" content="3;url=https://www.google.com/chrome/" />
   <link rel="stylesheet" href="/css/style.css" />
   <style>
     body {
@@ -48,6 +50,13 @@
       margin-bottom: 20px;
     }
     
+    .countdown {
+      font-size: 1.2rem;
+      color: #6c5ce7;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
     .manual-link {
       display: inline-block;
       margin-top: 20px;
@@ -71,11 +80,28 @@
     <div class="logo">⚡ FlashURL</div>
     <div class="redirect-icon">📱➡️🔍</div>
     <h1>Opening in Chrome...</h1>
+    <div class="countdown">
+      <span id="countdownTimer">3</span> seconds remaining
+    </div>
     <p>We're redirecting you to the Chrome browser for a better experience. If the automatic redirect doesn't work, click the button below.</p>
     <a id="manualRedirect" href="#" class="manual-link">Open in Chrome</a>
   </div>
 
   <script>
+    // Countdown timer
+    let seconds = 3;
+    const countdownElement = document.getElementById('countdownTimer');
+    const countdownInterval = setInterval(() => {
+      seconds--;
+      if (countdownElement) {
+        countdownElement.textContent = seconds;
+      }
+      
+      if (seconds <= 0) {
+        clearInterval(countdownInterval);
+      }
+    }, 1000);
+    
     // Function to detect platform and redirect
     function redirectToChrome() {
       const userAgent = navigator.userAgent || '';
@@ -115,8 +141,8 @@
     // Set the manual link URL to Chrome website
     document.getElementById('manualRedirect').href = 'https://www.google.com/chrome/';
     
-    // Try to redirect after a short delay
-    setTimeout(redirectToChrome, 2000);
+    // Try to redirect after a short delay (matching the meta refresh)
+    setTimeout(redirectToChrome, 3000);
   </script>
 </body>
 </html>
